@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context';
 
 // import { useAuthContext } from '../../App';
-import Button from 'commonComponentMf/Button';
+import Button from '../common/button';
 // import { useRouter } from 'next/router';
 const header = css`
   color: #fff;

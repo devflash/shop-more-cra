@@ -1,7 +1,8 @@
+import React from 'react';
 import { css } from '@emotion/react';
 // import Image from 'next/image';
 import { useAuth } from '../../context';
-import { server } from '../../config';
+import config from '../../config';
 import Toast from '../common/toast';
 import axios from 'axios';
 import { getErrorMessage } from '../../utils/handleError';
@@ -119,7 +120,7 @@ const initialState = {
 const Product = ({ navigateRoute, productId }) => {
   const { authUser } = useAuth();
   const [{ isLoading, isBackdrop }, setLoading] = useLoader({});
-
+  const { API_SERVER } = config;
   const [state, dispatch] = useReducer((state, newState) => {
     return {
       ...state,
@@ -132,7 +133,9 @@ const Product = ({ navigateRoute, productId }) => {
       setLoading({ isLoading: true, isBackdrop: false });
 
       try {
-        const { data } = await axios.get(`${server}/api/product/${productId}`);
+        const { data } = await axios.get(
+          `${API_SERVER}/api/product/${productId}`
+        );
         dispatch({ product: data });
       } catch (e) {
         const error_code = e.response.data;
@@ -153,7 +156,7 @@ const Product = ({ navigateRoute, productId }) => {
           userId: authUser.uid,
         };
         const { data } = await axios.post(
-          `${server}/api/wishlist/add`,
+          `${API_SERVER}/api/wishlist/add`,
           payload
         );
         const { msg } = data;
@@ -180,7 +183,10 @@ const Product = ({ navigateRoute, productId }) => {
           ...state.product,
           userId: authUser.uid,
         };
-        const { data } = await axios.post(`${server}/api/cart/add`, payload);
+        const { data } = await axios.post(
+          `${API_SERVER}/api/cart/add`,
+          payload
+        );
         const { msg } = data;
         if (msg === 'PRODUCT_ADDED_CART') {
           dispatch({ success: 'Product has been added to your cart' });

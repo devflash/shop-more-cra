@@ -1,7 +1,31 @@
 import React from 'react';
+import { Global, css } from '@emotion/react';
+import Container from './components/container';
+import AuthContextProvider from './context';
+import { BrowserRouter } from 'react-router-dom';
 
-const App = () => {
-  return <h1>React</h1>;
-};
+function MyApp() {
+  return (
+    <>
+      <Global
+        styles={css`
+          *,
+          ::before,
+          ::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-size: 16px;
+          }
+        `}
+      />
+      <AuthContextProvider>
+        <BrowserRouter>
+          <Container />
+        </BrowserRouter>
+      </AuthContextProvider>
+    </>
+  );
+}
 
-export default App;
+export default MyApp;

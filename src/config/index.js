@@ -1,2 +1,4 @@
-const dev = process.env.NODE_ENV !== 'production';
-export const server = dev ? 'http://localhost:3001' : '';
+const config = {
+  API_SERVER: process.env.API_SERVER,
+};
+export default config;

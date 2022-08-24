@@ -1,9 +1,10 @@
+import React from 'react';
 import { css } from '@emotion/react';
 import { useReducer, useEffect } from 'react';
 import Input from '../common/input';
 import Button from '../common/button';
 import Dialog from '../common/dialog';
-import { server } from '../../config';
+import config from '../../config';
 import { useAuth, useOrderContext } from '../../context';
 import SavedAddresses from './savedAddresses';
 import axios from 'axios';
@@ -171,12 +172,16 @@ const OrderAddress = ({ navigateRoute, userId }) => {
     return { ...state, ...newState };
   }, initialState);
 
+  const { API_SERVER } = config;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading({ isLoading: true, isBackdrop: false });
 
-        const { data } = await axios.get(`${server}/api/address/all/${userId}`);
+        const { data } = await axios.get(
+          `${API_SERVER}/api/address/all/${userId}`
+        );
         const { msg, addresses } = data;
         if (msg === 'ADDRESSES_FETCHED') {
           dispatch({ userAddresses: addresses.slice() });
@@ -364,7 +369,10 @@ const OrderAddress = ({ navigateRoute, userId }) => {
       try {
         setLoading({ isLoading: true, isBackdrop: true });
 
-        const { data } = await axios.post(`${server}/api/address/add`, address);
+        const { data } = await axios.post(
+          `${API_SERVER}/api/address/add`,
+          address
+        );
         const { msg } = data;
 
         if (msg === 'ADDRESS_ADDED') {

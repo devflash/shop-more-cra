@@ -1,9 +1,10 @@
+import React from 'react';
 import { css } from '@emotion/react';
 import { useReducer, useEffect } from 'react';
 // import Image from 'next/image';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import Button from '../common/button';
-import { server } from '../../config/index';
+import config from '../../config';
 import { useAuth, useOrderContext } from '../../context';
 import { BiArrowBack } from 'react-icons/bi';
 import axios from 'axios';
@@ -209,7 +210,7 @@ const CartItems = ({ navigateRoute, userId }) => {
   const { authUser } = useAuth();
   const { cart, updateCart } = useOrderContext();
   const [{ isLoading, isBackdrop }, setLoading] = useLoader({});
-
+  const { API_SERVER } = config;
   const [state, dispatch] = useReducer((state, newState) => {
     return {
       ...state,
@@ -231,7 +232,7 @@ const CartItems = ({ navigateRoute, userId }) => {
         //start loader
         setLoading({ isLoading: true, isBackdrop: false });
 
-        const { data } = await axios.get(`${server}/api/cart/${userId}`);
+        const { data } = await axios.get(`${API_SERVER}/api/cart/${userId}`);
         const { msg, items } = data;
         if (msg === 'CART_FETCHED') {
           let totalCost = calculateTotalCost(items);
@@ -256,7 +257,10 @@ const CartItems = ({ navigateRoute, userId }) => {
     try {
       setLoading({ isLoading: true, isBackdrop: true });
 
-      const { data } = await axios.post(`${server}/api/wishlist/add`, payload);
+      const { data } = await axios.post(
+        `${API_SERVER}/api/wishlist/add`,
+        payload
+      );
       const { msg } = data;
       if (msg === 'WISHLIST_SUCCESS') {
         dispatch({ success: 'Product has been added to your wishlist' });
@@ -281,7 +285,7 @@ const CartItems = ({ navigateRoute, userId }) => {
       try {
         setLoading({ isLoading: true, isBackdrop: true });
 
-        const { data } = await axios.delete(`${server}/api/cart/remove`, {
+        const { data } = await axios.delete(`${API_SERVER}/api/cart/remove`, {
           data: payload,
         });
         const { msg } = data;
@@ -312,9 +316,12 @@ const CartItems = ({ navigateRoute, userId }) => {
       try {
         setLoading({ isLoading: true, isBackdrop: false });
 
-        const { data } = await axios.delete(`${server}/api/cart/removeAll`, {
-          data: payload,
-        });
+        const { data } = await axios.delete(
+          `${API_SERVER}/api/cart/removeAll`,
+          {
+            data: payload,
+          }
+        );
         const { msg } = data;
         if (msg === 'EMPTY_CART') {
           const items = [];

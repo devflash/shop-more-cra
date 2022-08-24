@@ -1,8 +1,9 @@
+import React from 'react';
 import { css } from '@emotion/react';
 import { useEffect, useReducer } from 'react';
 import { useAuth } from '../../context';
 import Card from './card';
-import { server } from '../../config';
+import config from '../../config';
 import Button from '../common/button';
 import axios from 'axios';
 import { getErrorMessage } from '../../utils/handleError';
@@ -43,7 +44,7 @@ const initialState = {
 
 const Wishlist = ({ navigateRoute, userId }) => {
   const { authUser } = useAuth();
-
+  const { API_SERVER } = config;
   const [state, dispatch] = useReducer((state, newState) => {
     return {
       ...state,
@@ -59,7 +60,9 @@ const Wishlist = ({ navigateRoute, userId }) => {
       setLoading({ isLoading: true, isBackdrop: false });
 
       try {
-        const { data } = await axios.get(`${server}/api/wishlist/${userId}`);
+        const { data } = await axios.get(
+          `${API_SERVER}/api/wishlist/${userId}`
+        );
         const { msg } = data;
         if (msg === 'WISHLIST_FETCHED') {
           dispatch({ wishlist: data.userWishlist.slice() });
@@ -83,7 +86,7 @@ const Wishlist = ({ navigateRoute, userId }) => {
       const payload = {
         ...product,
       };
-      const { data } = await axios.post(`${server}/api/cart/add`, payload);
+      const { data } = await axios.post(`${API_SERVER}/api/cart/add`, payload);
       const { msg } = data;
       if (msg === 'PRODUCT_ADDED_CART') {
         dispatch({ success: 'Product has been added to your cart' });
@@ -102,7 +105,7 @@ const Wishlist = ({ navigateRoute, userId }) => {
       setLoading({ isLoading: true, isBackdrop: true });
 
       const { data } = await axios.delete(
-        `${server}/api/wishlist/remove/${authUser.uid}/${id}`
+        `${API_SERVER}/api/wishlist/remove/${authUser.uid}/${id}`
       );
       const { msg } = data;
       if (msg === 'PRODUCT_REMOVED') {

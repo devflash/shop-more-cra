@@ -1,3 +1,4 @@
+import React from 'react';
 import { useReducer } from 'react';
 import { css } from '@emotion/react';
 import { MdRadioButtonChecked, MdRadioButtonUnchecked } from 'react-icons/md';
@@ -6,7 +7,7 @@ import images from 'react-payment-inputs/images';
 import Button from '../common/button';
 import Input from '../common/input';
 import { useOrderContext, useAuth } from '../../context';
-import { server } from '../../config';
+import config from '../../config';
 import Dialog from '../common/dialog';
 import ConfirmPaymentDialog from './confirmPaymentDialog';
 import axios from 'axios';
@@ -154,9 +155,9 @@ const Payment = ({ navigateRoute }) => {
       ...newState,
     };
   }, initialState);
+  const { API_SERVER } = config;
   const { cart, address } = useOrderContext();
   const { authUser } = useAuth();
-  const router = useRouter();
   const [{ isLoading, isBackdrop }, setLoading] = useLoader({});
 
   const {
@@ -262,14 +263,19 @@ const Payment = ({ navigateRoute }) => {
       };
       try {
         setLoading({ isLoading: true, isBackdrop: true });
-        const { data } = await axios.post(`${server}/api/order/save`, order);
+        const { data } = await axios.post(
+          `${API_SERVER}/api/order/save`,
+          order
+        );
         const { msg } = data;
         if (msg === 'ORDER_PLACED') {
           //SHOW DIALOG
           const payload = {
             userId: authUser.uid,
           };
-          await axios.delete(`${server}/api/cart/removeAll`, { data: payload });
+          await axios.delete(`${API_SERVER}/api/cart/removeAll`, {
+            data: payload,
+          });
           dispatch({ showConfirmation: true, orderRef });
         }
       } catch (e) {

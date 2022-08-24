@@ -1,3 +1,4 @@
+import React from 'react';
 import { useReducer } from 'react';
 import { css } from '@emotion/react';
 import Input from '../common/input';

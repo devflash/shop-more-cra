@@ -1,8 +1,9 @@
+import React from 'react';
 import { css } from '@emotion/react';
 // import Image from 'next/image';
 import Button from '../common/button';
 import { useAuth } from '../../context';
-import { server } from '../../config';
+import config from '../../config';
 import { useReducer, useEffect } from 'react';
 import axios from 'axios';
 import { getErrorMessage } from '../../utils/handleError';
@@ -131,7 +132,7 @@ const initialState = {
 
 const Orders = ({ navigateRoute, userId }) => {
   const { authUser } = useAuth();
-
+  const { API_SERVER } = config;
   const [state, dispatch] = useReducer((state, newState) => {
     return {
       ...state,
@@ -147,7 +148,7 @@ const Orders = ({ navigateRoute, userId }) => {
       try {
         setLoading({ isLoading: true, isBackdrop: false });
 
-        const { data } = await axios.get(`${server}/api/orders/${userId}`);
+        const { data } = await axios.get(`${API_SERVER}/api/orders/${userId}`);
         const { msg } = data;
 
         if (msg === 'ORDERS_FETCHED') {
@@ -169,7 +170,7 @@ const Orders = ({ navigateRoute, userId }) => {
       setLoading({ isLoading: true, isBackdrop: true });
 
       const { data } = await axios.delete(
-        `${server}/api/order/cancel/${authUser.uid}/${orderRef}`
+        `${API_SERVER}/api/order/cancel/${authUser.uid}/${orderRef}`
       );
       const { msg } = data;
       if (msg === 'ORDER_CANCELLED') {
@@ -197,7 +198,7 @@ const Orders = ({ navigateRoute, userId }) => {
     try {
       setLoading({ isLoading: true, isBackdrop: true });
 
-      const { data } = await axios.post(`${server}/api/cart/add`, payload);
+      const { data } = await axios.post(`${API_SERVER}/api/cart/add`, payload);
       const { msg } = data;
       if (msg === 'PRODUCT_ADDED_CART') {
         dispatch({ success: 'Product has been added to the cart' });

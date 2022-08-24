@@ -1,9 +1,9 @@
-/** @jsxImportSource @emotion/react */
+import React from 'react';
 import { css } from '@emotion/react';
 import { MdRadioButtonChecked, MdRadioButtonUnchecked } from 'react-icons/md';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import Button from '../../common/button';
-import { server } from '../../../config';
+import config from '../../../config';
 import axios from 'axios';
 
 const wrapper = css`
@@ -69,6 +69,7 @@ const SavedAddresses = ({
   navigateToPreview,
   setLoading,
 }) => {
+  const { API_SERVER } = config;
   const handleRemoveAddress = async (id) => {
     const address = {
       userId,
@@ -77,7 +78,7 @@ const SavedAddresses = ({
     try {
       setLoading({ isLoading: true, isBackdrop: true });
 
-      const { data } = await axios.delete(`${server}/api/address/remove`, {
+      const { data } = await axios.delete(`${API_SERVER}/api/address/remove`, {
         data: address,
       });
       const { msg } = data;

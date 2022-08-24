@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 // import { auth } from '../utils/firebase';
 // import nookies from 'nookies';
 import axios from 'axios';
+import config from '../config';
 
 const useFireBaseAuth = () => {
   const [authUser, setAuthUser] = useState(null);
-
+  const { API_SERVER } = config;
   const createUser = async (email, password, firstName, lastName) => {
     try {
       const payload = {
@@ -14,10 +15,7 @@ const useFireBaseAuth = () => {
         firstName,
         lastName,
       };
-      const { data } = await axios.post(
-        'http://localhost:3001/api/signUp',
-        payload
-      );
+      const { data } = await axios.post(`${API_SERVER}/api/signUp`, payload);
       if (data.msg === 'ACCOUNT_CREATED') {
         setAuthUser(data.authUser);
         return data;
@@ -33,10 +31,7 @@ const useFireBaseAuth = () => {
         email,
         password,
       };
-      const { data } = await axios.post(
-        'http://localhost:3001/api/signIn',
-        payload
-      );
+      const { data } = await axios.post(`${API_SERVER}/api/signIn`, payload);
       if (data.msg === 'SIGNED_IN_SUCCESS') {
         setAuthUser(data.authUser);
       }
@@ -48,7 +43,7 @@ const useFireBaseAuth = () => {
 
   const signOutUser = async () => {
     try {
-      const { data } = await axios.get('http://localhost:3001/api/signOut');
+      const { data } = await axios.get(`${API_SERVER}/api/signOut`);
       if (data.msg === 'SIGNOUT_SUCCESSFUL') {
         setAuthUser(null);
         return data;

@@ -1,8 +1,8 @@
 import React, { useEffect, useReducer } from 'react';
 import { css } from '@emotion/react';
 import config from '../../config';
-import Loader from '../common/Loader';
-import Currency from '../common/Currency';
+import Loader from '../common/loader';
+import Currency from '../common/currency';
 import axios from 'axios';
 import useLoader from '../../hooks/useLoader';
 const wrapper = css`
@@ -82,6 +82,7 @@ const Products = ({ navigateRoute }) => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(`${API_SERVER}/api/products`);
+        debugger;
         if (data) {
           dispatch({ products: data });
         }

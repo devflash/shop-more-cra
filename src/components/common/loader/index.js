@@ -1,4 +1,4 @@
-/** @jsxImportSource @emotion/react */
+import React from 'react';
 import { css } from '@emotion/react';
 import ClipLoader from 'react-spinners/PropagateLoader';
 

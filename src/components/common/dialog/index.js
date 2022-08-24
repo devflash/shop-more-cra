@@ -1,4 +1,4 @@
-/** @jsxImportSource @emotion/react */
+import React from 'react';
 import { useEffect } from 'react';
 import { css } from '@emotion/react';
 import { MdCancel } from 'react-icons/md';
