@@ -5,7 +5,6 @@ import AuthContextProvider from './context';
 import { BrowserRouter } from 'react-router-dom';
 
 function MyApp() {
-  console.log('test');
   return (
     <>
       <Global
