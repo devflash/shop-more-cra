@@ -82,7 +82,6 @@ const Products = ({ navigateRoute }) => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(`${API_SERVER}/api/products`);
-        debugger;
         if (data) {
           dispatch({ products: data });
         }
